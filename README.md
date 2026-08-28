@@ -11,7 +11,6 @@ Open `index.html` in any browser, or deploy the folder to Vercel/Netlify.
 - 🖼️ **Photo gallery** — auto-play, swipe, dots, and tap-to-enlarge lightbox (← → / Esc)
 - 🎈 **Pop-able balloons** and 🎆 confetti + fireworks
 - ✨ **Cursor sparkle trail**
-- 🔗 **Share** button (Web Share API, with clipboard fallback)
 - 🎈 Optional **age / countdown** to the next birthday
 
 ## Customize
