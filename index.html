@@ -885,6 +885,7 @@ const card=document.getElementById("card");
 let opened=false;
 function openCard(){
   if(opened) return; opened=true;
+  if(window.va) va("event",{name:"Opened card"});   // count each time she opens it
   intro.classList.add("opening");
   setTimeout(()=>intro.classList.add("gone"),650);
   setTimeout(()=>{
@@ -901,5 +902,9 @@ intro.addEventListener("click",openCard);
 /* keep it lively */
 setInterval(()=>{ if(opened) burst(); },14000);
 </script>
+
+<!-- Vercel Web Analytics — counts visits/opens (view them in the Vercel dashboard) -->
+<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
