@@ -629,7 +629,7 @@ function buildCandles(){
   for(let i=0;i<candleCount;i++){
     const f=document.createElement("div"); f.className="flame"; candlesWrap.appendChild(f); flames.push(f);
   }
-  blowhint.textContent="🌬️ blow into your mic (or tap the cake) to blow out the candles";
+  blowhint.textContent="🌬️ tap the cake to blow out the candles";
 }
 buildCandles();
 let candlesOut=false;
@@ -642,26 +642,10 @@ function blowOut(){
   }, flames.length*120+200);
 }
 document.getElementById("bigcake").addEventListener("click",blowOut);
-
-/* try mic-based blow detection (optional, silently ignored if denied) */
-function tryMic(){
-  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia) return;
-  navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
-    const c=ac(); const src=c.createMediaStreamSource(stream);
-    const an=c.createAnalyser(); an.fftSize=512; src.connect(an);
-    const data=new Uint8Array(an.frequencyBinCount);
-    let loud=0;
-    (function check(){
-      if(candlesOut){ stream.getTracks().forEach(t=>t.stop()); return; }
-      an.getByteFrequencyData(data);
-      let sum=0; for(let i=0;i<data.length;i++) sum+=data[i];
-      const avg=sum/data.length;
-      if(avg>70){ if(++loud>6){ blowOut(); stream.getTracks().forEach(t=>t.stop()); return; } }
-      else loud=Math.max(0,loud-1);
-      requestAnimationFrame(check);
-    })();
-  }).catch(()=>{});
-}
+/* NOTE: microphone "blow" detection was removed on purpose — calling
+   getUserMedia() forces mobile browsers into voice-call audio mode, which
+   routes the music to the earpiece instead of the loudspeaker. Tapping the
+   cake blows out the candles reliably and keeps audio on the main speaker. */
 
 /* ---------- cursor sparkle trail ---------- */
 let lastSpark=0;
@@ -722,7 +706,6 @@ function openCard(){
     typeMessage();
     burst();
     if(CARD.music) startMusic();
-    tryMic();
     for(let i=0;i<5;i++) setTimeout(launchBalloon,i*400);
     setInterval(launchBalloon, 3500);
   }, 700);
